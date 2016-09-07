@@ -1,0 +1,333 @@
+<div class="history_view">
+    <div class="select_panel panel_default nav_tabs_tool">
+        <ul class="nav nav-tabs">
+            <li ng-class="panel_index == undefined || panel_index == 'one' ?'active':''" ng-click='panel_index = "one"'><a href="javascript:void(0)">按时间查询</a></li>
+            <li ng-class="panel_index == 'two'?'active':''" ng-click='panel_index = "two"'><a href="javascript:void(0)">按寝室查询</a></li>
+        </ul>
+        <div ng-form name="dateForm" class="select_time bg-white nav_tabs_detail" ng-class="panel_index == undefined || panel_index == 'one' ?'show':'hidden'">
+            <div class="form-group col-sm-4">
+                <p class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="time_start"
+                           is-open="status.opened"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)"
+                           ng-required="true"
+                           readonly
+                           max-date="maxDate"
+                           ng-click="status.opened = !status.opened"
+                           close-text="关闭"
+                           current-text="今日"
+                           clear-text="清空" readonly />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="open($event)">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+
+            </div>
+            <span class="pull-left center_span bg-white">至</span>
+            <div class="form-group col-sm-4">
+                <p class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="time_end"
+                           is-open="toOpened"
+                           max-date="maxDate"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)"
+                           ng-required="true"
+                           readonly
+                           ng-click="toOpened = !toOpened"
+                           close-text="关闭"
+                           current-text="今日"
+                           clear-text="清空" readonly />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="toOpened = true">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+            </div>
+            <script type="text/javascript">
+                /* http://eonasdan.github.io/bootstrap-datetimepicker */
+                $().ready(function () {
+                    //console.log($(".form_date"));
+                    var options = {
+                        showTodayButton: true,
+                        format: 'YYYY-MM-DD',
+                        ignoreReadonly: true,
+                        //keepOpen: false,
+                        locale: 'zh-cn',
+                        timeZone: ''
+                        //debug: true
+                    };
+                    jQuery('.input-group').datetimepicker(options);
+                    options.useCurrent = false;
+                    //$('#toDate').datetimepicker(options);
+                    $("#fromDate").on("dp.change", function (e) {
+                        $('#toDate').data("DateTimePicker").minDate(e.date);
+                    });
+                    $("#fromDate").on('dp.hide', function (e) {
+                        $('#time_start').value(e.date);
+                    });
+                    $("#toDate").on("dp.change", function (e) {
+                        $('#fromDate').data("DateTimePicker").maxDate(e.date);
+                    });
+                    $("#toDate").on('dp.hide', function (e) {
+                        // $('#time_end').value(e.date);
+                    });
+                })
+            </script>
+            <div class="form-group col-sm-2">
+                <select class="form-control width-max" ng-model="history_status">
+                    <option value="">全部</option>
+                    <option value="PAYED">已支付</option>
+                    <option value="CLOSED">已处理</option>
+                </select>
+            </div>
+            <a type="button" ng-disabled="dateForm.$invalid" class="mb-sm btn btn-success" ng-click='get_data(time_start,time_end,1,history_status)'>查询</a>
+        </div>
+        <div class="select_time bg-white nav_tabs_detail" ng-class="panel_index == 'two' ?'show':'hidden'">
+            <ng-form name="myform" id="myform">
+                <div class="form-group col-lg-3 col-sm-6 padding-right-empty">
+                    <div for="name" class="pull-left des_text col-lg-4"><span class="required">*</span>生活区</div>
+                    <select class="form-control col-lg-8" ng-model="select_area" required>
+                        <option ng-repeat="detail in schoolarea" value={{detail.AreaId}}>{{detail.AreaName}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 col-sm-6 padding-right-empty">
+                    <div for="name" class="pull-left des_text col-lg-4"><span class="required">*</span>楼栋</div>
+                    <select class="form-control col-lg-8" ng-model="select_flat" required>
+                        <option ng-repeat="detail in schoolflat " value={{detail.FlatId}}>{{detail.FlatName}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 col-sm-6 padding-right-empty">
+                    <div for="name" class="pull-left des_text col-lg-6"><span class="required">*</span>寝室号(数字)</div>
+                    <input ng-pattern="/^[0-9]+$/" ng-maxlength="4" name="select_room" class="form-control col-lg-6" placeholder="请输入寝室号" ng-model="select_room" required />
+                    <!--<div class="help-block error" ng-show="myform.roomNumber.$error.required">Required</div>-->
+                </div>
+                <div class="form-group col-lg-3 col-sm-6 padding-right-empty">
+                    <div for="name" class="pull-left des_text col-lg-4">状态</div>
+                    <select class="form-control col-lg-8" ng-model="history_status_room">
+                        <option value="">全部</option>
+                        <option value="PAYED">已支付</option>
+                        <option value="CLOSED">已处理</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button ng-disabled="myform.$invalid" class="mb-sm btn btn-success margin_side" ng-click='get_data_room(1)'>查询</button>
+                </div>
+            </ng-form>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-class="resultType==1?'active':'hidden'">
+        <div class="panel-heading">暂无充值缴费记录</div>
+    </div>
+    <div class="panel panel-default" ng-class="resultType==2?'active':'hidden'" ng-class="'slideInDown animated':history_time_data.list.length > 0">
+        <!-- START table-responsive-->
+        <div class="table-responsive">
+            <table id="table-ext-1" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th data-check-all="">
+                            <div data-toggle="tooltip" data-title="Check All" class="checkbox c-checkbox" data-original-title="" title="">
+                                <label>
+                                    <input type="checkbox" ng-model="all_check">
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </th>
+                        <th>充值订单号</th>
+                        <th>生活区</th>
+                        <th>楼栋</th>
+                        <th>寝室号</th>
+                        <th>用户</th>
+                        <th>类型</th>
+                        <th>金额</th>
+                        <th>状态</th>
+                        <th>时间</th>
+                        <th ng-if="history_time_data.status != 'CLOSED'">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="detail in history_time_data.list">
+                        <td>
+                            <div class="checkbox c-checkbox ">
+                                <label>
+                                    <input class="history-first" ng-disabled="detail.Status != '5'|| detail.OrderType== '11'" type="checkbox" ng-checked="all_check && detail.Status == '5' && detail.OrderType== '11'" value={{detail.OrderNo}}>
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </td>
+                        <td>{{detail.OrderNo}}</td>
+                        <td>{{detail.AdditionalData | flatinfo:'live'}}</td>
+                        <td>{{detail.AdditionalData | flatinfo:'flat'}}</td>
+                        <td>{{detail.AdditionalData | flatinfo}}</td>
+                        <td>{{detail.UpdatedBy}}</td>
+                        <td>{{detail.TypeValue | limitTo:5}}</td>
+                        <td>{{detail.Amount/100}}元</td>
+                        <td>{{detail.StatusValue}}</td>
+                        <td>{{detail | time_replace}}</td>
+                        <td data-log={{detail.OrderNo}} class="handle_button" ng-click='detail_order()' ng-class="(detail.Status != '5' || detail.OrderType== '11')?'closed':''" ng-if="history_time_data.status != 'CLOSED'">{{detail.OrderType== '11'?'':(detail.StatusValue === '已支付'?'处理':'已处理')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- END table-responsive-->
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-sm btn-default" ng-click="detail_order(true)">批量处理</button>
+                </div>
+                <div class="col-sm-6" ng-hide="nav_data.firstPage && nav_data.lastPage">
+                    <nav class="pull-right">
+                        <ul class="pagination pagination-sm m0">
+                            <li ng-if="!nav_data.firstPage">
+                                <a  ng-click='get_data(time_start,time_end,nav_data.now - 1)' aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li ng-if="nav_data.lastPage && nav_data.now - 4 > 0">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now-4,history_status_room)'>{{nav_data.now - 4 }}</a>
+                            </li>
+                            <li ng-if="!nav_data.firstPage && nav_data.now -3 > 0 && nav_data.now + 2 > nav_data.total">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now-3)'>{{nav_data.now - 3 }}</a>
+                            </li>
+                            <li ng-if="!nav_data.firstPage && nav_data.now -2 > 0">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now-2)'>{{nav_data.now - 2 }}</a>
+                            </li>
+                            <li ng-if="!nav_data.firstPage">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now-1)'>{{nav_data.now - 1 }}</a>
+                            </li>
+                            <li class="active">
+                                <a>{{nav_data.now}}</a>
+                            </li>
+                            <li ng-if="!nav_data.lastPage ">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now + 1)'>{{nav_data.now + 1 }}</a>
+                            </li>
+                            <li ng-if="!nav_data.lastPage && nav_data.now + 2 <= nav_data.total">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now + 2)'>{{nav_data.now + 2 }}</a>
+                            </li>
+                            <li ng-if="!nav_data.lastPage && nav_data.now + 3 <= nav_data.total && nav_data.now -3 <= 0">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now + 3)'>{{nav_data.now + 3 }}</a>
+                            </li>
+                            <li ng-if="nav_data.firstPage && nav_data.now + 4 <= nav_data.total">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now + 4)'>{{nav_data.now + 4 }}</a>
+                            </li>
+                            <li ng-if="!nav_data.lastPage ">
+                                <a ng-click='get_data(time_start,time_end,nav_data.now + 1)' aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default " ng-class="resultType==4?'active':'hidden'" ng-class="'slideInDown animated':history_time_data_room.list.length > 0">
+        <!-- START table-responsive-->
+        <div class="table-responsive">
+            <table id="table-ext-1" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th data-check-all="">
+                            <div data-toggle="tooltip" data-title="Check All" class="checkbox c-checkbox" data-original-title="" title="">
+                                <label>
+                                    <input type="checkbox" ng-model="all_check_room">
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </th>
+                        <th>订单号</th>
+                        <th>用户</th>
+                        <th>类型</th>
+                        <th>金额</th>
+                        <th>状态</th>
+                        <th>时间</th>
+                        <th ng-if="history_time_data_room.status != 'CLOSED'">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="detail in history_time_data_room.list">
+                        <td>
+                            <div class="checkbox c-checkbox">
+                                <label>
+                                    <input ng-disabled="detail.Status != '5' || detail.OrderType== '11'" type="checkbox" ng-checked="all_check_room && detail.Status == '5'&& detail.OrderType== '11'"  class="history-second" value={{detail.OrderNo}}>
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </td>
+                        <td>{{detail.OrderNo}}</td>
+                        <td>{{detail.UpdatedBy}}</td>
+                        <td>{{detail.typeValue | limitTo:5}}</td>
+                        <td>{{detail.Amount/100}}元</td>
+                        <td>{{detail.statusValue}}</td>
+                        <td>{{detail | time_replace}}</td>
+                        <td data-log={{detail.OrderNo}} class="handle_button" ng-click="detail_order_room(false)" ng-class="(detail.Status != '5'|| detail.OrderType== '11')?'closed':''" ng-if="history_time_data.status != 'CLOSED'">{{detail.OrderType== '11'?'':(detail.Status == 5 ?'处理':'已处理')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- END table-responsive-->
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-sm btn-default" ng-click="detail_order_room(true)">批量处理</button>
+                </div>
+                <div class="col-sm-6" ng-hide="nav_data_room.firstPage && nav_data_room.lastPage">
+                    <nav class="pull-right">
+                        <ul class="pagination pagination-sm m0">
+                            <li ng-if="!nav_data_room.firstPage">
+                                <a  ng-click='get_data_room(nav_data_room.now-1)' aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li ng-if="nav_data_room.lastPage && nav_data_room.now - 4 > 0">
+                                <a ng-click='get_data_room(nav_data_room.now-4)'>{{nav_data_room.now - 4 }}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.firstPage && nav_data_room.now -3 > 0 && nav_data_room.now + 2 > nav_data_room.total">
+                                <a ng-click='get_data_room(nav_data_room.now-3)'>{{nav_data_room.now - 3 }}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.firstPage && nav_data_room.now -2 > 0">
+                                <a ng-click='get_data_room(nav_data_room.now-2)'>{{nav_data_room.now - 2 }}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.firstPage">
+                                <a ng-click='get_data_room(nav_data_room.now-1)'>{{nav_data_room.now - 1 }}</a>
+                            </li>
+                            <li class="active">
+                                <a>{{nav_data_room.now}}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.lastPage ">
+                                <a ng-click='get_data_room(nav_data_room.now+1)'>{{nav_data_room.now + 1 }}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.lastPage && nav_data_room.now + 2 <= nav_data_room.total">
+                                <a ng-click='get_data_room(nav_data_room.now + 2)'>{{nav_data_room.now + 2 }}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.lastPage && nav_data_room.now + 3 <= nav_data_room.total && nav_data_room.now -3 <= 0">
+                                <a ng-click='get_data_room(nav_data_room.now + 3)'>{{nav_data_room.now + 3 }}</a>
+                            </li>
+                            <li ng-if="nav_data_room.firstPage && nav_data_room.now + 4 <= nav_data_room.total">
+                                <a ng-click='get_data_room(nav_data_room.now + 4)'>{{nav_data_room.now + 4 }}</a>
+                            </li>
+                            <li ng-if="!nav_data_room.lastPage ">
+                                <a  ng-click='get_data_room(nav_data_room.now+1)' aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

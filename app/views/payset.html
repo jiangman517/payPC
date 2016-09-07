@@ -1,0 +1,178 @@
+<div class="payset_view">
+	<div class="form_part nav_tabs_tool">
+		<ul class="nav nav-tabs">
+			<li ng-class="panel_index == undefined || panel_index == 'one' ?'active':''" ng-click='panel_index = "one"'><a href="javascript:void(0)">前付费缴费模式</a></li>
+			<li ng-class="panel_index == 'two'?'active':''" ng-click='panel_index = "two"'><a href="javascript:void(0)">后付费缴费模式</a></li>
+		</ul>
+		<div class="pre_set_part bg-white nav_tabs_detail" ng-class="panel_index == undefined || panel_index == 'one' ?'show':'hidden'">
+			<div class="radio c-radio form-part">
+				<label>模式状态</label>
+				<label>
+					<input type="radio" ng-value="true" ng-model="config.Status">
+					<span class="fa fa-circle"></span>开启</label>
+				<label>
+					<input type="radio" ng-value="false" ng-model="config.Status">
+					<span class="fa fa-circle"></span>关闭</label>
+			</div>
+			<div class="form-group form-part">
+				<label for="input-id-1" class="control-label">微信关键词</label>
+				<div class="form-part-input">
+					<input id="input-id-1" type="text" class="form-control" ng-model="config.WeChatKeyword">
+				</div>
+			</div>
+			<div class="form-group form-part">
+				<label class="control-label textarea_label">续费提醒</label>
+				<div class="form-part-input">
+					<textarea class="form-control" rows="3" ng-model="config.ReminderTemplate"></textarea>
+				</div>
+			</div>
+			<div class="radio c-radio form-part">
+				<label>微信模板消息</label>
+				<label>
+					<input type="radio" ng-value="true" ng-model="config.TemplateMessageStatus">
+					<span class="fa fa-circle"></span>开启</label>
+				<label>
+					<input type="radio" ng-value="false" ng-model="config.TemplateMessageStatus">
+					<span class="fa fa-circle"></span>关闭</label>
+			</div>
+			<div class="form-group form-part" style="display:none">
+				<label for="input-id-2" class="control-label">欠费提醒</label>
+				<div class="form-part-input">
+					<input id="input-id-2" type="number" step="0.01" class="form-control" ng-model="config.ArrearageReminderLimit">
+				</div>
+			</div>
+			<div class="radio c-radio form-part" style="display:none">
+				<label>开启支付</label>
+				<label>
+					<input type="radio" name="c" ng-value="true" ng-model="config.WeChatPaymentStatus">
+					<span class="fa fa-circle"></span>开启</label>
+				<label>
+					<input type="radio" name="c" ng-value="false" ng-model="config.WeChatPaymentStatus">
+					<span class="fa fa-circle"></span>关闭（仅查询）</label>
+			</div>
+			<div class="form-group form-part" style="display:none">
+				<label for="input-id-3" class="control-label">支付配置</label>
+				<div class="form-part-input">
+					<button type="button" class="mb-sm btn btn-primary">前往设置</button>
+				</div>
+			</div>
+			<div class="radio c-radio form-part" style="display:none">
+				<label>厂家接口</label>
+				<label>
+					<input type="radio" name="d" value="1" ng-model="config.VenderInterface">
+					<span class="fa fa-circle"></span>查询接口</label>
+				<label>
+					<input type="radio" name="d" value="2" ng-model="config.VenderInterface">
+					<span class="fa fa-circle"></span>支付接口</label>
+				<label>
+					<input type="radio" name="d" value="3" ng-model="config.VenderInterface">
+					<span class="fa fa-circle"></span>查询和支付接口</label>
+				<label>
+					<input type="radio" name="d" value="4" ng-model="config.VenderInterface"> <span class="fa fa-circle">
+					</span>关闭</label>
+			</div>
+			<div class="form-group form-part" style="display:none">
+				<label for="venderInfo1" class="control-label">厂家信息</label>
+				<div class="form-part-input">
+					<input id="venderInfo1" type="text" class="form-control" ng-model="config.VenderInfo">
+				</div>
+			</div>
+			
+			<div class="radio c-radio form-part">
+				<label></label>
+				<label class="clear_padding">
+					<button type="button" class="mb-sm btn btn-primary" ng-click="save(0)">保存设置</button>
+				</label>
+			</div>
+		</div>
+		<div class="pre_set_part bg-white nav_tabs_detail" ng-class="panel_index == 'two' ?'show':'hidden'">
+			<div class="radio c-radio form-part">
+				<label>模式状态</label>
+				<label>
+					<input type="radio"  ng-value="true" ng-model="billconfig.Status">
+					<span class="fa fa-circle"></span>开启</label>
+				<label>
+					<input type="radio" ng-value="false" ng-model="billconfig.Status">
+					<span class="fa fa-circle"></span>关闭</label>
+			</div>
+			<div class="form-group form-part">
+				<label for="input-id-1" class="control-label">微信关键词</label>
+				<div class="form-part-input">
+					<input id="input-id-1" type="text" class="form-control" ng-model="billconfig.WeChatKeyword">
+				</div>
+			</div>
+			<div class="form-group form-part">
+				<label for="input-id-2" class="control-label">缴费时间</label>
+				<div class="form-part-input">
+					<input id="input-id-2" type="number" class="form-control" ng-model="billconfig.PayDays">
+				</div>
+				<label for="">天</label>
+			</div>
+			<div class="form-group form-part">
+				<label class="control-label textarea_label">缴费提醒</label>
+				<div class="form-part-input">
+					<textarea class="form-control" rows="3" ng-model="billconfig.ReminderTemplate"></textarea>
+				</div>
+			</div>
+			<div class="radio c-radio form-part">
+				<label>微信模板消息</label>
+				<label>
+					<input type="radio"  ng-value="true" ng-model="billconfig.TemplateMessageStatus">
+					<span class="fa fa-circle"></span>开启</label>
+				<label>
+					<input type="radio"  ng-value="false" ng-model="billconfig.TemplateMessageStatus">
+					<span class="fa fa-circle"></span>关闭</label>
+			</div>
+			<div class="form-group form-part">
+				<label for="input-id-3" class="control-label">催缴提醒</label>
+				<div class="form-part-input">
+					<input id="input-id-3" type="number" class="form-control" ng-model="billconfig.ArrearageReminderDays">
+				</div>
+				<label for="">天</label>
+			</div>
+			<div class="radio c-radio form-part" style="display:none">
+				<label>开启支付</label>
+				<label>
+					<input type="radio" ng-value="true" ng-model="billconfig.WeChatPaymentStatus">
+					<span class="fa fa-circle"></span>开启</label>
+				<label>
+					<input type="radio" ng-value="false" ng-model="billconfig.WeChatPaymentStatus">
+					<span class="fa fa-circle"></span>关闭（仅查询）</label>
+			</div>
+			<div class="form-group form-part" style="display:none">
+				<label class="control-label">支付配置</label>
+				<div class="form-part-input">
+					<button type="button" class="mb-sm btn btn-primary">前往设置</button>
+				</div>
+			</div>
+			<div class="radio c-radio form-part" style="display:none">
+				<label>厂家接口</label>
+				<label>
+					<input type="radio"  value="1" ng-model="billconfig.VenderInterface">
+					<span class="fa fa-circle"></span>查询接口</label>
+				<label>
+					<input type="radio"  value="2" ng-model="billconfig.VenderInterface">
+					<span class="fa fa-circle"></span>支付接口</label>
+				<label>
+					<input type="radio"  value="3" ng-model="billconfig.VenderInterface">
+					<span class="fa fa-circle"></span>查询和支付接口</label>
+				<label>
+					<input type="radio"  value="4" ng-model="billconfig.VenderInterface"> 
+					<span class="fa fa-circle"></span>关闭
+				</label>
+			</div>
+			<div class="form-group form-part" style="display:none">
+				<label for="venderInfo2" class="control-label">厂家信息</label>
+				<div class="form-part-input">
+					<input id="venderInfo2" type="text" class="form-control" ng-model="billconfig.VenderInfo">
+				</div>
+			</div>
+			<div class="radio c-radio form-part">
+				<label></label>
+				<label class="clear_padding">
+					<button type="button" class="mb-sm btn btn-primary" ng-click="save(1)">保存设置</button>
+				</label>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,368 @@
+<div class="meterreading-view">
+	<div class="select-panel">
+	</div>
+	
+	<!--
+	<div class="select-panel">
+		<div ng-click="select.yearPlus(-1)" class="select-year">< {{select.year-1}}</div>
+		<div class="select-box">
+			<div class="select-season">
+				<div ng-click="select.setSeason(1)" ng-class="select.seasonSetting(1)">1季度</div>
+				<div ng-click="select.setSeason(2)" ng-class="select.seasonSetting(2)">2季度</div>
+				<div ng-click="select.setSeason(3)" ng-class="select.seasonSetting(3)">3季度</div>
+				<div ng-click="select.setSeason(4)" ng-class="select.seasonSetting(4)">4季度</div>
+			</div>
+			<div class="select-month">
+				<div ng-click="select.setMonth(1)" ng-class="select.monthSetting(1)">1月</div>
+				<div ng-click="select.setMonth(2)" ng-class="select.monthSetting(2)">2月</div>
+				<div ng-click="select.setMonth(3)" ng-class="select.monthSetting(3)">3月</div>
+				<div ng-click="select.setMonth(4)" ng-class="select.monthSetting(4)">4月</div>
+				<div ng-click="select.setMonth(5)" ng-class="select.monthSetting(5)">5月</div>
+				<div ng-click="select.setMonth(6)" ng-class="select.monthSetting(6)">6月</div>
+				<div ng-click="select.setMonth(7)" ng-class="select.monthSetting(7)">7月</div>
+				<div ng-click="select.setMonth(8)" ng-class="select.monthSetting(8)">8月</div>
+				<div ng-click="select.setMonth(9)" ng-class="select.monthSetting(9)">9月</div>
+				<div ng-click="select.setMonth(10)" ng-class="select.monthSetting(10)">10月</div>
+				<div ng-click="select.setMonth(11)" ng-class="select.monthSetting(11)">11月</div>
+				<div ng-click="select.setMonth(12)" ng-class="select.monthSetting(12)">12月</div>
+			</div>
+			
+		</div>
+		<div ng-click="select.yearPlus(1)" class="select-year" ng-class="select.year>=select.yearNow?' disable':''">{{select.year+1}} ></div>
+	</div>-->
+	
+	
+	
+	<div class="main">
+		<div class="tree-panel">
+			<div id="treeView" class="treeView">
+				<ul onclick='treeToggle()'>
+					<li class="open" ng-repeat="unvsty in vm.items">
+						<a ng-click="select.choose(0)" class="branch">                         
+							<div>{{unvsty.label}}</div>
+						</a>
+						<ul>
+							<li ng-repeat="la in unvsty.items" ng-class="$index == 0?'open':''">
+								<a class="branch" ng-click="select.choose(1,la)">
+									<div>{{la.AreaName}} </div>
+								</a>
+								<ul>
+									<li ng-repeat="flat in la.Flats" ng-show="flat.FlatName">
+										<a ng-click="select.choose(2,la,flat)" class="leaf">{{flat.FlatName}}</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<script>
+				(function(){
+					var tree = document.getElementById('treeView'),h  = (document.documentElement.clientHeight || document.body.clientHeight) - 205;				
+                    if(h < 600)
+						tree.style.maxHeight = 600 + 'px';
+					else tree.style.maxHeight = h + 'px';
+					tree.addEventListener("touchstart",treeToggle);
+				})()
+				function treeToggle(){
+					event.preventDefault();
+					var a = $(event.target).closest("a").get(0);
+					var n = a.parentNode.className;
+					//$(".newing").removeClass("newing").addClass("new");
+					$("#newItem").fadeOut();
+					if(/branch/.test(a.className)){
+						if(/open/.test(n)){
+							$(a).siblings("ul").slideUp("fast",function(){$(a.parentNode).removeClass('open');});
+						}
+						else {
+							$(a).siblings("ul").slideDown("fast",function(){$(a.parentNode).addClass('open');});
+						}
+					}
+					else if(/leaf/.test(a.className)){
+						$("#treeView a.active").removeClass("active");
+						$(a).addClass("active");
+					}
+				}
+				
+			</script>
+		</div>
+		<div class="content-panel">
+			<div class="title-panel">
+				{{select.title()}}
+			</div>
+			<div class="menu-panel">
+				<button type="button" class="btn btn-info" ng-click="add.addOn()">添加</button>
+				<button type="button" class="btn btn-primary" onclick="document.getElementById('uploadForm').reset();document.getElementById('fileUpload').click();">导入</button>
+				<form id="uploadForm" style="display:none;" ><input id="fileUpload" type="file" custom-on-change="uploadFile"></form>
+				<a type="button" class="btn btn-default" href="http://pay.houqinbao.com:8089/水电录入样表.xls">下载样表</a>
+                
+            
+         <!--
+				<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+					<button type="button" class="btn btn-success" ng-click="publish.save()">发布</button>
+					<div class="btn-group" role="group">
+						<button id="btnGroupDrop1" type="button" style="padding-left:3px;padding-right:3px;" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{publish.type==0?'全校':(publish.type==1?'本生活区':'本楼')}}
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="min-width:50px;">
+							<li><a ng-click="publish.type = 2">本楼</a></li>
+							<li><a ng-click="publish.type = 1">本生活区</a></li>
+							<li><a ng-click="publish.type = 0">全校</a></li>
+						</ul>
+					</div>
+				</div>   -->           
+			</div>
+           <!--
+			<div class="option-panel">
+				<div class="btn-group" role="group" aria-label="group">
+				<button type="button" ng-click="select.typechange(0)" ng-class="select.type == 0 ?'btn-primary':''" class="btn btn-default">全部</button>
+				<button type="button" ng-click="select.typechange(3)" ng-class="select.type == 3 ?'btn-primary':''" class="btn btn-default">未发布</button>
+				<button type="button" ng-click="select.typechange(1)" ng-class="select.type == 1 ?'btn-primary':''" class="btn btn-default">未缴清</button>
+				<button type="button" ng-click="select.typechange(2)" ng-class="select.type == 2 ?'btn-primary':''" class="btn btn-default">已缴清</button>
+				</div>
+			</div>-->
+			<div class="table-panel">
+				<table width="100%" class="table table-hover table-striped" ng-hide="select.type==88">
+					<thead>
+						<tr>
+							<th>生活区</th>
+							<th>楼栋</th>
+							<th>房间号</th>
+							<th width="40">类型</th>							
+							<th>显示度数</th>
+							<th>剩余用量</th>
+							<th>剩余金额</th>
+							<th>剩余赠送用量</th>	
+							<th>最近更新时间</th>			
+							<th>操作</th>					
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-show="loading&&dataList.length<1"><td colspan="12">正在努力加载...</td></tr>
+						<tr ng-show="(!loading)&&dataList.length<1"><td colspan="12">暂无记录</td></tr>
+						<tr ng-repeat="item in dataList" ng-class="{'editing':item.edit}">
+							<td>
+								{{item.AreaName}}
+							</td>
+							<td>
+								{{item.FlatName}}
+							</td>
+							<td>
+								{{item.Room}}
+							</td>
+							<td>
+								{{item.UnitName}}费							 
+							</td>
+							<td> 							
+								<ul>
+									<li>
+										<span>{{item.AllAmp}}</span>
+										<input type="text" ng-model="edit.item.AllAmp" value="item.AllAmp">
+									</li>
+								</ul>
+							</td>
+							<td> 
+								<ul>
+									<li>
+										<span>{{item.AllLastAmp}}</span>
+										<input type="text" ng-model="edit.item.AllLastAmp" value="item.AllLastAmp">
+									</li>
+								</ul>
+							</td>
+							<td> 
+								<ul>
+									<li>
+										<span>{{item.ChargeSum}}</span>
+										<input type="text" ng-model="edit.item.ChargeSum" value="item.ChargeSum">
+									</li>
+								</ul>
+							</td>
+							<td>  
+								<ul>
+									<li>
+										<span>{{item.AllLastGiftAmp}}</span>
+										<input type="text"  ng-model="edit.item.AllLastGiftAmp" value="item.AllLastGiftAmp">
+									</li>
+								</ul> 
+							</td>
+							<td>
+								
+								{{ item.UpdateTime | date:'yyyy-MM-dd HH:mm:ss' }}
+								
+								<!--{{item.UpdateTime}}
+								<ul>
+									<li ng-repeat="detail in item.Details">
+										<span>{{detail.Amount}}</span>
+										<input type="text" disabled ng-model="edit.item.Details[$index].Amount" ng-keyup="edit.sum()" >
+									</li>
+								</ul>-->
+							</td> 	
+							<td>
+								
+								<button ng-show="item.edit == true" type="button" data-option="editCancel" ng-click="edit.save()" class="btn btn-primary btn-sm">保存</button>
+							    <button ng-show="item.edit == true" type="button" data-option="editCancel" ng-click="edit.editOff(item)" class="btn btn-default btn-sm">取消</button>
+						
+								
+								<button type="button" ng-click="edit.editOn(item)" data-option="edit" class="btn btn-link btn-xs">编辑</button>
+							</td>				
+						</tr>
+					</tbody>
+					<tfoot id="newItem" ng-show="add.edit">
+						<tr class="open-detail info" ng-class="{'editing':add.edit}">
+							<td>
+								<div class="dropup" style="display:inline-block">
+									<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										{{add.item.area.AreaName}}
+										<i class="caret"></i>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="min-width:20px;cursor: pointer;">
+										<li ng-repeat="la in vm.items[0].items"><a ng-click="add.addArea(la)">{{la.AreaName}}</a></li>
+									</ul>
+								</div>
+							</td>
+							<td>
+								<div class="dropup" style="display:inline-block">
+									<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										{{add.item.flat.FlatName}}
+										<i class="caret"></i>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="min-width:20px;cursor: pointer;">
+										<li ng-repeat="flat in add.item.area.Flats"><a ng-click="add.addFlat(flat)">{{flat.FlatName}}</a></li>
+									</ul>
+								</div>
+							</td>
+							
+							<td>
+								<input type="text" ng-model="add.item.Room" >
+							</td>
+							<td> 
+								电费
+							</td>
+							<td>
+								
+								<input type="text" ng-model="add.item.AllAmp">
+								<!--
+								<ul ng-repeat="detail in add.item.Details">
+									<li>
+										<input type="text" ng-model="detail.UnitPrice" ng-keyup="add.compute($index)">
+									</li>
+								</ul>-->
+								
+							</td>
+							<td>
+								<input type="text" ng-model="add.item.AllLastAmp">
+								<!--
+								<ul ng-repeat="detail in add.item.Details">
+									<li>
+										<input type="text" ng-model="detail.QStart" ng-keyup="add.compute($index)">
+									</li>
+								</ul>-->
+							</td>
+							<td>
+								<input type="text" ng-model="add.item.ChargeSum">
+								<!--
+								<ul ng-repeat="detail in add.item.Details">
+									<li>
+										<input type="text" ng-model="detail.QEnd" ng-keyup="add.compute($index)">
+									</li>
+								</ul>-->
+							</td>
+							<td>
+								<input type="text" ng-model="add.item.AllLastGiftAmp">
+								<!--
+								<ul ng-repeat="detail in add.item.Details">
+									<li>
+										<input type="text" disabled readonly ng-model="detail.Quantity" ng-keyup="add.count($index)">
+									</li>
+								</ul>-->
+							</td>
+																	
+							<td>
+								<button type="button" data-option="addCancel" ng-click="add.save()" class="btn btn-primary btn-sm">保存</button>
+								<button type="button" data-option="addCancel" ng-click="add.off()" class="btn btn-default btn-sm">取消</button>
+							</td>
+						</tr>
+					</tfoot>				
+				</table>
+				<script>
+					
+				</script>
+				
+				<table width="100%" class="table table-hover table-striped" ng-show="select.type==88">
+					<thead>
+						<tr>
+							<th>生活区</th>
+							<th>楼栋</th>
+							<th>房间号</th>
+							<th>日期</th>
+							<th>合计</th>
+							<th>错误信息</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-show="loading&&logList.length<1"><td colspan="12">正在努力加载...</td></tr>
+						<tr ng-show="(!loading)&&logList.length<1"><td colspan="12">暂无记录</td></tr>
+						<tr ng-repeat="item in logList">
+							<td>
+								{{item.AreaName}}
+							</td>
+							<td>
+								{{item.FlatName}}
+							</td>
+							<td>
+								{{item.Room}}
+							</td>
+							<td>
+								{{item.BillPeroid}}
+							</td>
+							<td>
+								{{item.Amount}}
+							</td>
+							<td>
+								{{item.Comments}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="footer-panel">
+					<nav class="pull-right" onclick="$('.editing').removeClass('editing');$('#newItem').fadeOut();">
+                        <ul class="pagination">
+							<li ng-click="pageInfo.pagePlus(-1)" ng-class="pageInfo.pageIndex>1?'':'disabled'">
+								<a href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li ng-click="pageInfo.pagePlus(-2)" ng-show="pageInfo.pageIndex-2>0"><a href="#">{{pageInfo.pageIndex-2}}</a></li>
+							<li ng-click="pageInfo.pagePlus(-1)" ng-show="pageInfo.pageIndex-1>0"><a href="#">{{pageInfo.pageIndex-1}}</a></li>
+							<li class="active"><a href="#">{{pageInfo.pageIndex}}</a></li>
+							<li ng-click="pageInfo.pagePlus(1)" ng-show="pageInfo.pageIndex<pageInfo.total/pageInfo.pageSize"><a href="#">{{pageInfo.pageIndex+1}}</a></li>
+							<li ng-click="pageInfo.pagePlus(2)" ng-show="pageInfo.pageIndex+1<pageInfo.total/pageInfo.pageSize"><a href="#">{{pageInfo.pageIndex+2}}</a></li>
+							<li ng-click="pageInfo.pagePlus(1)" ng-class="pageInfo.pageIndex<pageInfo.total/pageInfo.pageSize?'':'disabled'">
+								<a href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+                    </nav>
+					<div class="pull-left pageInfo">
+						每页显示
+						<div class="dropup" style="display:inline-block">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								{{pageInfo.pageSize}}
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="min-width:20px;cursor: pointer;">
+								<li><a ng-click="pageInfo.sizeChange(5)" onclick="$('.editing').removeClass('editing');$('#newItem').fadeOut();">5</a></li>
+								<li><a ng-click="pageInfo.sizeChange(10)" onclick="$('.editing').removeClass('editing');$('#newItem').fadeOut();">10</a></li>
+								<li><a ng-click="pageInfo.sizeChange(20)" onclick="$('.editing').removeClass('editing');$('#newItem').fadeOut();">20</a></li>
+								<li><a ng-click="pageInfo.sizeChange(50)" onclick="$('.editing').removeClass('editing');$('#newItem').fadeOut();">50</a></li>
+							</ul>
+						</div>
+						记录，共{{pageInfo.total}}条记录
+					</div>
+				</div>
+		</div>
+	</div>
+</div>

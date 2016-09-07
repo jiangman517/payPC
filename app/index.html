@@ -1,0 +1,143 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
+    <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/simple-line-icons.css">
+    <link rel="stylesheet" type="text/css" href="styles/loaders.css">
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
+    <link rel="stylesheet" href="styles/init/init.css">
+    <!-- endbuild -->
+</head>
+
+<body ng-app="payPcApp">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Add your site or application content here -->
+    <div class="wrapper">
+        <!-- top navbar-->
+        <header ui-view="header" class="topnavbar-wrapper"></header>
+        <!-- sidebar-->
+        <aside ui-view="aside" class="aside"></aside>
+        <section class="main_section">
+            <div class="content-wrapper">
+                <div ui-view=""></div>
+            </div>
+        </section>
+        <div ui-view="login" class="login_view"></div>
+        <div class="panel-body loader-demo" ng-show="loading">
+            <div class="ball-spin-fade-loader">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <div id="newPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade" style="display: none;"  ng-controller="headerCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 id="myModalLabel" class="modal-title">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">旧密码</label>
+                            <div class="col-lg-10">
+                                <input type="password" ng-model="oldPassword" placeholder="请输入原来的密码" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">新密码</label>
+                            <div class="col-lg-10">
+                                <input type="password" ng-model="newPassword" placeholder="请输入新密码" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">确认密码</label>
+                            <div class="col-lg-10">
+                                <input type="password" ng-model="confirmPassword" placeholder="请再输入一遍新密码" class="form-control">
+                                <div style="color:#f05050;font-size:12px;" ng-show="newPassword.length>0 && confirmPassword.length>0 && confirmPassword!=newPassword">两次密码输入不一致</div>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="changePassword()" class="btn btn-primary">提交</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="bower_components/moment/min/moment-with-locales.min.js"></script>
+    <script src="bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+    <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    
+    
+    <script src="scripts/app.js"></script>
+    <script src="scripts/other.js"></script>
+    <script src="scripts/infoCard.js"></script>
+    <script src="scripts/service/LoginService.js"></script>
+    <script src="scripts/service/HttpInterceptor.js"></script>
+    <script src="scripts/service/treeservice.js"></script>
+    <script src="scripts/service/SchoolService.js"></script>
+    <script src="scripts/controllers/aside.js"></script>
+    <script src="scripts/controllers/loginview.js"></script>
+    <script src="scripts/controllers/history.js"></script>
+    <script src="scripts/controllers/account.js"></script>
+    <script src="scripts/controllers/paySet.js"></script>
+    <script src="scripts/controllers/building.js"></script>
+    <script src="scripts/controllers/statistics.js"></script>
+    <script src="scripts/controllers/accessCtrl.js"></script>
+    <script src="scripts/controllers/manage.js"></script>
+    <script src="scripts/controllers/meterreading.js"></script>
+    <script src="scripts/controllers/meterreadingsurplus.js"></script>
+    <script src="scripts/fliter/FlatInfoFliter.js"></script>
+    <!-- endbuild -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+</body>
+
+</html>

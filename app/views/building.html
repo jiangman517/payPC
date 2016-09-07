@@ -1,0 +1,222 @@
+<div class="buildingset_view">
+	<div class="form_part nav_tabs_tool">
+		<ul class="nav nav-tabs">
+			<li ng-class="panel_index == undefined || panel_index == 'one' ?'active':''" ng-click='panel_index = "one"'><a href="javascript:void(0)">生活区楼栋设置</a></li>
+			<li ng-class="panel_index == 'three'?'active':''" ng-click='panel_index = "three"'><a href="javascript:void(0)">校区设置</a></li>
+            <!-- <li ng-class="panel_index == 'two'?'active':''" ng-click='panel_index = "two"'><a href="javascript:void(0)">寝室设置</a></li> -->
+		</ul>
+		<div class="bg-white area-setting" pre_set_part nav_tabs_detail ng-class="panel_index == undefined || panel_index == 'one' ?'show':'hidden'">
+			<div class="treeView">
+				<ul tree>
+					<li class="open" ng-repeat="unvsty in vm.items">
+						<a ng-click="show(0,unvsty)" class="branch">
+							<div>
+								{{uni}}<!--span ng-click="test(0,unvsty)"><em class="fa fa-edit"></em></span>
+							</div>
+							<div>
+								<input type="text" ng-model="labelEdit">
+								<button ng-click="edit(0,unvsty,labelEdit)" class="btn btn-primary btn-sm">保存</button>
+								<button class="btn btn-default btn-sm">取消</button-->
+							</div>
+						</a>
+						<ul>
+							<li ng-repeat="la in unvsty.items" ng-class="$index == 0?'open':''">
+								<a ng-click="show(1,la)" class="branch">
+									<div>
+										{{la.AreaName}} 
+										<span ng-click="delete(1,la)"><em class="fa fa-trash"></em></span> 
+										<span><em class="fa fa-edit"></em></span>
+									</div>
+									<div>
+										<input type="text" ng-model="labelEdit">
+										<button ng-click="edit(1,la,labelEdit)" class="btn btn-primary btn-sm">保存</button>
+										<button class="btn btn-default btn-sm">取消</button>
+									</div>
+								</a>
+								<ul>
+									<li ng-repeat="flat in la.Flats" ng-show="flat.FlatName">
+										<a ng-click="show(2,flat)" class="leaf">
+											<div>
+												{{flat.FlatName}}
+												<span ng-click="delete(2,flat)"><em class="fa fa-trash"></em></span> 
+												<span><em class="fa fa-edit"></em></span>
+											</div>
+											<div>
+												<input type="text" ng-model="labelEdit">
+												<button ng-click="edit(2,flat,labelEdit)" class="btn btn-primary btn-sm">保存</button>
+												<button class="btn btn-default btn-sm">取消</button>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a class="new">
+											<div>
+												<em class="fa fa-plus-circle"></em> 添加
+											</div>
+											<div>
+												<input type="text" ng-model="labelAdd">
+												<button ng-click="add(2,la,labelAdd)" class="btn btn-primary btn-sm">添加</button>
+												<button class="btn btn-default btn-sm">取消</button>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a class="new">
+									<div>
+										<em class="fa fa-plus-circle"></em> 添加
+									</div>
+									<div>
+										<input type="text" ng-model="labelAdd">
+										<button ng-click="add(1,unvsty,labelAdd)" class="btn btn-primary btn-sm">添加</button>
+										<button class="btn btn-default btn-sm">取消</button>
+									</div>
+								</a>
+								
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div id="settingView">
+				<div class="building-info">
+					<label>{{type==0?"学校名":(type==1?"生活区名":"楼栋名")}}</label>
+					<div>
+						{{labelEdit}}
+					</div>
+				</div>
+				<div ng-show="type==2" class="building-info">
+					<label>缴费模式</label>
+					<div class="radio c-radio">
+						<label>
+							<input type="radio" name="paymode" ng-click="paymodeSave(0)" ng-checked="paymodeEdit==0">
+							<span class="fa fa-circle"></span>前付费
+						</label>
+						<label>
+							<input type="radio" name="paymode" ng-click="paymodeSave(1)" ng-checked="paymodeEdit==1">
+							<span class="fa fa-circle"></span>后付费
+						</label>
+					</div>
+				</div>
+                <div ng-show="type==1" class="building-info">
+					<label>所属校区</label>
+					<div class="radio c-radio">
+                        <select class="form-control" ng-model="campusId" ng-change="campusSave()">
+                            <option ng-repeat="ca in campus" ng-selected="campusId == ca.CampusId" value="{{ca.CampusId}}">
+                                {{ca.CampusName}} 
+                            </option>
+                        </select>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="pre_set_part bg-white nav_tabs_detail" ng-if="panel_index == 'two'">
+			<div class="radio c-radio form-part">
+				<label>寝室人数</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>1人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>2人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>3人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>4人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>5人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>6人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>7人</label>
+				<label>
+					<input type="radio" name="b" value="option1">
+					<span class="fa fa-circle"></span>8人</label>
+			</div>
+			<div class="radio c-radio form-part">
+				<label></label>
+				<label class="clear_padding">
+					<button type="button" class="mb-sm btn btn-primary">保存设置</button>
+				</label>
+			</div>
+		</div>
+        <div class="pre_set_part bg-white area-setting" ng-if="panel_index == 'three'">
+            <div class="treeView">
+                <ul tree>
+					<li class="open">
+						<a class="branch">
+							<div>
+								{{uni}}
+							</div>
+						</a>
+						<ul>
+							<li ng-repeat="ca in campus">
+								<a ng-click="show(3,ca)" class="leaf">
+									<div>
+										{{ca.CampusName}} 
+										<span ng-click="delete(3,ca)"><em class="fa fa-trash"></em></span> 
+										<span><em class="fa fa-edit"></em></span>
+									</div>
+									<div>
+										<input type="text" ng-model="labelEdit">
+										<button ng-click="edit(3,ca,labelEdit)" class="btn btn-primary btn-sm">保存</button>
+										<button class="btn btn-default btn-sm">取消</button>
+									</div>
+								</a>
+							</li>
+							<li>
+								<a class="new">
+									<div>
+										<em class="fa fa-plus-circle"></em> 添加
+									</div>
+									<div>
+										<input type="text" ng-model="labelAdd">
+										<button ng-click="add(3,{},labelAdd)" class="btn btn-primary btn-sm">添加</button>
+										<button class="btn btn-default btn-sm">取消</button>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+            </div>
+            <div id="bindingView">
+				<div class="building-info" ng-show="type==3">
+					<label>数据库地址</label>
+					<div>
+                       <input type="text" class="form-control" ng-model="servers.address" />
+					</div>
+				</div>
+                <div class="building-info" ng-show="type==3">
+					<label>数据库名</label>
+					<div>
+                       <input type="text" class="form-control" ng-model="servers.name" />
+					</div>
+				</div>
+                <div class="building-info" ng-show="type==3">
+					<label>账号名</label>
+					<div>
+                       <input type="text" class="form-control" ng-model="servers.user" />
+					</div>
+				</div>
+                <div class="building-info" ng-show="type==3">
+					<label>密码</label>
+					<div>
+                       <input type="password" class="form-control" ng-model="servers.pass" />
+					</div>
+				</div>
+                <div class="building-info" ng-show="type==3">
+                    <div style="text-align:center;padding-top:10px;">
+					   <input type="button" value="保存" class="btn btn-info" ng-click="edit(4,{},'aaa')" />
+                    </div>
+				</div>
+            </div>
+        </div>
+	</div>

@@ -1,0 +1,146 @@
+.buildingset_view,.meterreading-view{
+	.area-setting{
+		overflow: hidden;
+		padding: 15px;
+		border:1px solid #ddd;
+		border-top:none;
+		.treeView{
+			float: left;
+			border: 1px dashed #ddd;
+			width: 300px;
+		}
+	}
+	.area-setting,.tree-panel{
+		.treeView{
+			overflow-y: auto;
+			a{
+				display: block;
+				position: relative;
+				cursor: pointer;
+				height: 30px;
+				line-height: 30px;
+				color: #333;
+				span{
+					display: none;
+					float: right;
+					height: 26px;
+					width: 26px;
+					line-height: 26px;
+					margin-top:2px;
+					text-align: center;
+					em{
+						padding:6px;
+					}
+				}
+				&:hover{
+					color: #333;
+					text-decoration: none;
+					background-color: #eee;
+					span{
+						display: block;
+						&:hover{
+							color: #fff;
+							background-color: #888;
+						}
+					}
+				}
+			}
+			
+			a.active{
+				background-color: #f1f1f1;
+			}
+			li{
+				list-style:none; 
+			}
+			a.branch,a.leaf{
+				div{
+					padding-left: 20px;
+				}
+				div:nth-of-type(2){
+					display:none;
+				}
+			}
+			a.new{
+				div:nth-of-type(2){
+					display: none;
+				}
+			}
+			a.newing,a.branch.edit,a.leaf.edit{
+				div:nth-of-type(1){
+					display: none;
+				}
+				div:nth-of-type(2){
+					display:block;
+					input{
+						display: inline-block;height: 30px;width: 100px;
+					}
+					button{
+						position: relative;
+						top:-2px;
+					}
+				}
+			}
+			ul {
+				padding:0;margin:0;
+				li {
+					a{
+						padding-left:20px;
+					}
+					ul{
+						display: none;
+					}
+					ul li {
+						a{
+							padding-left:40px;
+						}
+						ul li{
+							a{
+								padding-left:60px;
+							}
+							ul li{
+								a{
+									padding-left:80px;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			ul li a.branch::before{
+				position:absolute;
+				top:10px;
+				display: inline-block;
+				font:normal normal normal 14px/1 FontAwesome;
+				text-rendering: auto;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				transform: translate(0, 0);
+				content: "\f196";
+			}
+			ul li.open>a::before{
+				content: "\f147";
+			}
+			ul li.open>ul{
+				display: block;
+			}
+		}
+		#settingView,#bindingView{
+			margin-left:310px;
+			border: 1px dashed #ddd;
+			padding:20px;
+			font-size: 16px;
+			.building-info{
+                margin-bottom: 5px;
+				label{
+					display:inline-block;
+					width:100px;
+				}
+				div{
+					display:inline-block;
+					width:300px;
+				}
+			}
+		}
+	}
+}

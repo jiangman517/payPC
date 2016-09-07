@@ -1,0 +1,13 @@
+.statistics_view {
+    .panel_main {
+        .select_part {
+            margin-bottom: $DefaultMargin;
+            .center_span {
+                line-height: 35px;
+            }
+            .form-control {
+                width: 100%;
+            }
+        }
+    }
+}

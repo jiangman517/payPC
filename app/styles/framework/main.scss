@@ -1,0 +1,210 @@
+$DefaultMargin:15px;
+.main_section {
+    backgrounf-color: #fff;
+}
+
+.panel_default {
+    margin-bottom: $DefaultMargin;
+}
+
+.form-group {
+    .form_date {
+        width: 100%;
+    }
+}
+
+.table-responsive {
+    overflow-x: initial;
+    .handle_button {
+        color: #5d9cec;
+        cursor: pointer;
+    }
+}
+
+.btn-unselect {
+    background-color: #fff;
+    color: #5d9cec;
+    border: 1px solid #5899eb;
+}
+
+.padding-right-empty {
+    padding-right: 0px;
+}
+
+.time_part {
+    height: 35px;
+    margin-bottom: 0px !important;
+}
+
+.panel_main {
+    width: 100%;
+    padding: $DefaultMargin;
+    border: 1px solid #dde6e9;
+    margin-bottom: $DefaultMargin;
+    .panel_dashed {
+        border: 1px dashed #ddd;
+        padding: $DefaultMargin;
+    }
+}
+
+.loader-demo {
+    z-index: 1000;
+    padding-left: 220px;
+    position: absolute;
+    width: 100%;
+    top: -webkit-calc(50% - 75px);
+}
+
+.tree {
+    border: 1px dashed #ddd;
+    width: 300px;
+    padding-top: $DefaultMargin;
+    li {
+        cursor: pointer;
+        padding-left: $DefaultMargin;
+        label {
+            cursor: pointer;
+            width:100%;
+            .fa-trash-o {
+                padding-left: 5px;
+            }
+        }
+    }
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .intermediate {
+        opacity: 0.3;
+    }
+    input{
+        width:60%;
+    }
+}
+
+.history_view {
+    .select_panel {
+        .center_span {
+            line-height: 35px;
+        }
+        .form-group {
+            .des_text {
+                line-height: 35px;
+                padding-right: 15px;
+            }
+        }
+        .margin_side {
+            margin: 0px $DefaultMargin;
+        }
+        .btn-success {
+            margin-left: 15px;
+        }
+    }
+    .closed {
+        color: #ccc;
+    }
+    .pagination{
+        a{
+            cursor: pointer;
+        }
+    }
+}
+
+.account_view {
+    .nav-tabs{
+        border-bottom:0px;
+    }
+    .select_panel {
+        border: 1px solid #ddd;
+        padding: $DefaultMargin 0px;
+        .time_part {
+            margin-bottom: $DefaultMargin !important;
+            .form-group {
+                height: 35px;
+                margin-bottom: 0px;
+            }
+            .center_span {
+                line-height: 35px;
+            }
+        }
+        .time_length_select {
+            padding: 0 $DefaultMargin;
+            margin-bottom: $DefaultMargin;
+            .btn {
+                margin-right: 15px;
+            }
+        }
+        .find-btn {
+            margin-left: $DefaultMargin;
+        }
+    }
+    .table-responsive {
+        .table-bordered {
+            border: 1px solid #eee;
+            thead {
+                tr {
+                    th {
+                        width: 10% !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.payset_view {
+    .form_part {
+        .pre_set_part {
+            .form-part {
+                margin: 20px 0;
+                label {
+                    padding-right: $DefaultMargin;
+                    font-weight: initial;
+                    &:first-child {
+                        padding-left: 0px;
+                        width: 100px;
+                        text-align: left;
+                    }
+                    &.textarea_label {
+                        vertical-align: top;
+                    }
+                    &.clear_padding {
+                        padding-left: 0px;
+                    }
+                }
+                .form-part-input {
+                    display: inline-block;
+                    width: 200px;
+                    .form-control {
+                        width: 100%
+                    }
+                }
+            }
+        }
+    }
+}
+
+.buildingset_view {
+    .pre_set_part {
+        .form-part {
+            label {
+                padding-right: $DefaultMargin;
+                font-weight: initial;
+                &:first-child {
+                    padding-left: 0px;
+                    width: 100px;
+                    text-align: left;
+                }
+                &.clear_padding {
+                    padding-top: $DefaultMargin;
+                    padding-left: 0px;
+                }
+            }
+        }
+    }
+}
+.access-view {
+	.header{
+		margin-bottom:15px;
+	}
+}

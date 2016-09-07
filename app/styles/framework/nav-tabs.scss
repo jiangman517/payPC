@@ -1,0 +1,17 @@
+.nav_tabs_tool {
+    .nav-tabs {
+        li {
+            a {
+                border-left-width: 0px !important;
+            }
+            &:first-child a {
+                border-left-width: 1px !important;
+            }
+        }
+    }
+    .nav_tabs_detail {
+        padding: $DefaultMargin;
+        border: 1px solid #ddd;
+        border-top: 0px;
+    }
+}

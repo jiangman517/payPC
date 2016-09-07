@@ -1,0 +1,39 @@
+{
+  "name": "pay-pc",
+  "version": "0.0.0",
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "angular": "^1.3.0",
+    "bootstrap": "^3.2.0",
+    "angular-animate": "^1.3.0",
+    "angular-cookies": "^1.3.0",
+    "angular-resource": "^1.3.0",
+    "angular-route": "^1.3.0",
+    "angular-sanitize": "^1.3.0",
+    "angular-touch": "^1.3.0",
+    "animate.css": "^3.4.0",
+    "angular-ui-router": "~0.2.15",
+    "sweetalert": "~1.1.0",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "moment": "~2.10.6",
+     "angular-bootstrap": "~0.14.3"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.3.0"
+   
+  },
+  "appPath": "app",
+  "moduleName": "payPcApp",
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
+      ]
+    }
+  },
+  "resolutions": {
+    "bootstrap": "^3.2.0"
+  }
+}

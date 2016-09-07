@@ -1,0 +1,200 @@
+<div class="statistics_view">
+    <div class="panel_main bg-white">
+        <div class="row select_part">
+            <div class="col-md-4">
+                <select class="form-control" ng-model="vm.country" ng-options="country.label for country in vm.countries">
+                    <option value="">-- 所有生活区 --</option>
+                </select>
+            </div>
+            <div class="col-md-4" ng-if="vm.country.provinces">
+                <select class="form-control" ng-model="vm.province" ng-options="province.label for province in vm.country.provinces">
+                    <option value="">-- 所有楼栋 --</option>
+                </select>
+            </div>
+            <div class="col-md-4" ng-if="vm.province.cities">
+                <select class="form-control" ng-model="vm.city" ng-options="city.label for city in vm.province.cities">
+                    <option value="">-- 所有寝室 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="row select_part">
+            <div class="form-group col-sm-4 time_part">
+                <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" ng-model="user.name" readonly>
+                    <span class="input-group-addon"><span class="fa fa-remove glyphicon glyphicon-remove "></span></span>
+                    <span class="input-group-addon"><span class="fa fa-calendar glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <input type="hidden" id="start_time" value="" />
+                <br/>
+            </div>
+            <span class="pull-left center_span bg-white">至</span>
+            <div class="form-group col-sm-4 time_part">
+                <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="fa fa-remove glyphicon glyphicon-remove "></span></span>
+                    <span class="input-group-addon"><span class="fa fa-calendar glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <input type="hidden" id="end_time" value="" />
+                <br/>
+            </div>
+            <script type="text/javascript">
+            $().ready(function() {
+                console.log($(".form_date"));
+                $('.form_date').datetimepicker({
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+                });
+            })
+            </script>
+        </div>
+        <button type="button" class="mb-sm btn btn-success find-btn" ng-click="get_data()">查询</button>
+        <!-- <div>您选择的是：{{vm.country.label}} - {{vm.province.label}} - {{vm.city.label}}</div>
+ -->
+    </div>
+    <div id="main" style="height:400px" class="panel_main bg-white"></div>
+    <div class="panel panel-default">
+        <!-- START table-responsive-->
+        <div class="table-responsive">
+            <table id="table-ext-1" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>UID</th>
+                        <th>Picture</th>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Profile</th>
+                        <th>Last Login</th>
+                        <th data-check-all="">
+                            <div data-toggle="tooltip" data-title="Check All" class="checkbox c-checkbox" data-original-title="" title="">
+                                <label>
+                                    <input type="checkbox">
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="media">
+                                <img src="images/user/01.jpg" alt="Image" class="img-responsive img-circle">
+                            </div>
+                        </td>
+                        <td>@twitter</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>mail@example.com</td>
+                        <td class="text-center">
+                            <div data-label="25%" class="radial-bar radial-bar-25 radial-bar-xs"></div>
+                        </td>
+                        <td>1 week</td>
+                        <td>
+                            <div class="checkbox c-checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <div class="media">
+                                <img src="images/user/02.jpg" alt="Image" class="img-responsive img-circle">
+                            </div>
+                        </td>
+                        <td>@mdo</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>mail@example.com</td>
+                        <td class="text-center">
+                            <div data-label="50%" class="radial-bar radial-bar-50 radial-bar-xs"></div>
+                        </td>
+                        <td>25 minutes</td>
+                        <td>
+                            <div class="checkbox c-checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <div class="media">
+                                <img src="images/user/03.jpg" alt="Image" class="img-responsive img-circle">
+                            </div>
+                        </td>
+                        <td>@fat</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>mail@example.com</td>
+                        <td class="text-center">
+                            <div data-label="80%" class="radial-bar radial-bar-80 radial-bar-xs"></div>
+                        </td>
+                        <td>10 hours</td>
+                        <td>
+                            <div class="checkbox c-checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                    <span class="fa fa-check"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- END table-responsive-->
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="text" placeholder="Search" class="input-sm form-control">
+                        <span class="input-group-btn">
+                              <button type="button" class="btn btn-sm btn-default">Search</button>
+                           </span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav class="pull-right">
+                        <ul class="pagination pagination-sm m0">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a>
+                            </li>
+                            <li><a href="#">2</a>
+                            </li>
+                            <li><a href="#">3</a>
+                            </li>
+                            <li><a href="#">4</a>
+                            </li>
+                            <li class="active"><a href="#">5</a>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

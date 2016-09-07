@@ -1,0 +1,171 @@
+<div class="account_view ">
+	<div class="">
+		<div class="select_panel panel_default bg-white" ng-class="show">
+			<div class="select_time bg-white">
+				<div class="time_part clearfix row" style="margin-left:0;">
+					<div class="form-group col-sm-3">               
+                <p class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="time_start"
+                           is-open="status.opened"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)"
+                           ng-required="true"
+                           readonly
+                           max-date="maxDate"
+                           close-text="关闭"
+                           current-text="今日"
+                           ng-click="status.opened = !status.opened"
+                           clear-text="清空" />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="open($event)">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+            </div>
+            <span class="pull-left center_span bg-white">至</span>
+            <div class="form-group col-sm-3">
+                <p class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           uib-datepicker-popup="{{format}}"
+                           ng-model="time_end"
+                           is-open="toOpened"
+                           max-date="maxDate"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)"
+                           ng-required="true"
+                           close-text="关闭"
+                           current-text="今日"
+                           readonly
+                           ng-click="toOpened = !toOpened"
+                           clear-text="清空" />
+                    <span class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="toOpened = true">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </p>
+
+             
+            </div>
+					<div class="col-sm-6 time_length_select row">
+						<button class="btn" ng-class="typeOfBillDateSetting==1?'btn-primary':'btn-default'" ng-click="setBillDate(1)">当天</button>
+						<button class="btn" ng-class="typeOfBillDateSetting==2?'btn-primary':'btn-default'" ng-click="setBillDate(2)">昨天</button>
+						<button class="btn" ng-class="typeOfBillDateSetting==3?'btn-primary':'btn-default'" ng-click="setBillDate(3)">上周</button>
+						<button class="btn" ng-class="typeOfBillDateSetting==4?'btn-primary':'btn-default'" ng-click="setBillDate(4)">上月</button>
+					</div>
+
+					<script type="text/javascript">
+						/*$().ready(function() {
+							//console.log($(".form_date"));
+							jQuery('.form_date').datetimepicker({
+								showTodayButton: true,
+								format: 'YYYY-MM-DD',
+								ignoreReadonly: true,								
+								locale: 'zh-cn',
+								timeZone: '',
+							});
+						})*/
+					</script>
+				</div>
+				<div class="clearfix time_length_select">
+					<a type="button" style="margin-left:0;" class="mb-sm btn btn-success find-btn" ng-click="get_account(time_start,time_end)">查询本地账单</a>
+					<a type="button" class="mb-sm btn btn-success find-btn" ng-click="check_account(time_start,time_end)">微信对账</a>
+					<a type="button" class="mb-sm btn btn-success find-btn" ng-click='dowmload_check_account(time_start,time_end)'>下载对账单</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="">
+		<div class="panel panel-default" ng-class="resultType==1?'active':'hidden'">
+			<div class="panel-heading">暂无充值缴费记录</div>
+		</div>
+		<div class="panel panel-default" ng-class="resultType==4?'active':'hidden'">
+			<div class="panel-heading">没有发现有误差的记录。</div>
+		</div>
+		<div class="panel panel-default" ng-class="resultType==2?'active':'hidden'">
+			<div class="panel-heading">{{accountinfo.bTime | date:"yyyy-MM-dd"}} 至 {{accountinfo.eTime|date:"yyyy-MM-dd"}} 账单</div>
+			<!-- START table-responsive-->
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table id="table-ext-1" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>已处理交易数</th>
+								<th>未处理交易数</th>
+								<th>总交易数</th>
+								<th>已处理电费</th>
+								<th>未处理电费</th>
+								<th>总电费</th>
+								<th>处理完成比</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{accountinfo.ProcessedCount}}</td>
+								<td>{{accountinfo.WaitProcessCount}}</td>
+								<td>{{accountinfo.WaitProcessCount + accountinfo.ProcessedCount}}</td>
+								<td>{{accountinfo.ProcessedAmount}}元</td>
+								<td>{{accountinfo.WiatProcessAmount}}元</td>
+								<td>{{accountinfo.TotalAmount}}元</td>
+								<td class="text-center">
+									<div data-label={{accountinfo.percent|number:0}}% class="radial-bar radial-bar-xs" style="background-image:linear-gradient(90deg, #fafafa 50%, transparent 50%, transparent), linear-gradient({{accountinfo.percent | account_percent}}, #5d9cec 50%, #fafafa 50%, #fafafa);"></div>
+								</td>
+								<td> <a type="button" class="mb-sm btn btn-success" ng-click=dowmload_local_account(accountinfo.bTime,accountinfo.eTime)>下载明细</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- END table-responsive-->
+			<div class="panel-footer">
+				<div class="row">
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default" ng-class="resultType==3 ?'active':'hidden'">
+			<div class="panel-heading">异常账单（微信账单存在1-2天延时，实时对账请以微信支付后台订单列表为准）</div>
+			<!-- START table-responsive-->
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table id="table-ext-1" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>商户订单号</th>
+								<th>微信订单号/交易号</th>
+								<th>微信金额</th>
+								<th>本地金额</th>
+								<th>订单是否在本地存在</th>
+								<th>订单是否在微信端存在</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr ng-repeat="detail in checkinfo">
+								<td>{{detail.OrderNo}}</td>
+								<td>{{detail.WxOrderNo?detail.WxOrderNo:'不存在'}}</td>
+								<td>{{detail.WxAmount}}元</td>
+								<td>{{detail.LocalAmount}}元</td>
+								<td>{{detail.IsLocal?'存在':'不存在'}}</td>
+								<td>{{detail.IsWx?'存在':'不存在'}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- END table-responsive-->
+			<div class="panel-footer">
+				<div class="row">
+				</div>
+			</div>
+		</div>
+	</div>

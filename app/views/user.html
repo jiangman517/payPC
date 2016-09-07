@@ -1,0 +1,240 @@
+<div class="form_part nav_tabs_tool access-view">
+    <ul class="nav nav-tabs">
+        <li ng-class="panel_index == undefined || panel_index == 1 ?'active':''" ng-click='panel_index = 1'><a href="javascript:void(0)">用户管理</a></li>
+        <li ng-class="panel_index == 2?'active':''" ng-click='panel_index = 2'><a href="javascript:void(0)">权限管理</a></li>
+        <li ng-class="panel_index == 3?'active':''" ng-click='panel_index = 3'><a href="javascript:void(0)">费用设置</a></li>
+    </ul>
+    <div class="pre_set_part bg-white nav_tabs_detail" ng-class="panel_index == undefined || panel_index == 1 ?'show':'hidden'">
+        <script type="text/ng-template" id="userRole.html">
+            <div class="modal-header">
+                <h3 class="modal-title">用户角色管理 - <font class="label-success">{{user.UserName}}</font></h3>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">选择角色</div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li ng-repeat="item in roles" class="list-group-item">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="item.selected">
+                                    {{item.RoleName}}
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
+        <header class="header">
+            <a class="btn  btn-success" href="#" ng-click="startAdd()">
+                <i class="fa fa-user-plus fa-1x"></i>添加帐户
+            </a>
+        </header>
+        <div class="table-responsive">
+            <table id="table-ext-1" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>用户名  </th>
+                        <th>联系方式</th>
+                        <th>Email</th>
+                        <th>创建时间</th>
+                        <th>上次登录时间</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="detail in users" ng-form class="form-group" name="editUserForm">
+                        <td>{{detail.UserName}}</td>
+                        <td><span ng-show="!detail.edit">{{detail.Mobile}}</span>
+                            <input type="tel" name="tel" 
+                                   pattern="((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)" 
+                                   class="form-control" 
+                                   
+                                   ng-model="detail.MobileD" 
+                                   ng-show="detail.edit"
+                                   required />
+                            <span class="label-warning" ng-show="editUserForm.tel.$error.pattern">
+                                电话号码格式不正确
+                            </span>
+                        </td>
+                        <td><span ng-show="!detail.edit">{{detail.Email}} </span>
+                            <input type="email" 
+                                   name="email" 
+                                   class="form-control" 
+                                   ng-model="detail.EmailD" 
+                                   ng-show="detail.edit"
+                                   required />
+                            <span class="label-warning" ng-show="editUserForm.email.$error.email">
+                                Email 格式不正确
+                            </span>
+                        </td>
+                        <td>{{detail.RegTime | unixtimestamp}}</td>
+                        <td>{{detail.LastLoginTime | unixtimestamp}}</td>
+                        <td ng-click="mapRole(detail)">
+                            <ul class="list-inline" role="button" >
+                                <li ng-repeat="item in detail.Roles">
+                                    <label class="label label-info">{{item.RoleName}}</label>
+                                </li>
+                            </ul>
+                        </td>
+                        <td><span ng-show="!detail.edit">{{detail.Status|userStatus}}</span>
+                            <label ng-show="detail.edit">
+                                <input type="checkbox" ng-model="detail.StatusD" >
+                                {{detail.StatusD|userStatus}}
+                            </label>
+                        </td>
+                        <td>
+                            <ul class="list-inline">
+                                <li ng-show="!detail.edit">
+                                    <a href="#" ng-click="startEditUser(detail)" ><i class="fa fa-pencil fa-fw"></i>修改</a>
+                                </li>
+                                <li ng-show="detail.edit && !editUserForm.$invalid"> 
+                                    <a href="#" ng-click="editUser(detail)" ><i class="fa  fa-floppy-o fa-fw"></i>保存</a>
+                                </li>
+                                <li ng-show="!detail.edit">
+                                    <a href="#" ng-click="resetPwd(detail)" ><i class="fa  fa-undo fa-fw"></i>重置密码</a>
+                                </li>
+                                <li ng-show="detail.edit">
+                                    <a href="#" ng-click="cancelEdit(detail)" ><i class="fa  fa-times fa-fw"></i>取消</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr ng-show="addnewUser" ng-form name="newUserform" class="form-group">
+                        <td><input type="text" class="form-control" ng-model="newU.UserName" required /></td>
+                        <td>
+                            <input type="tel" name="tel" pattern="((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)" class="form-control" ng-model="newU.Mobile" required />
+                            <span class="label-warning" ng-show="newUserform.tel.$error.pattern">
+                                电话号码格式不正确
+                            </span>
+                        </td>
+                        <td>
+                            <input type="email" name="email" class="form-control" ng-model="newU.Email" required />
+                            <span class="label-warning" ng-show="newUserform.email.$error.email">
+                                Email 格式不正确
+                            </span>
+
+                        </td>
+                        <td><span>-</span></td>
+                        <td><span>-</span></td>
+                        <td><span>-</span></td>
+                        <td>
+                            <input type="checkbox" ng-model="newU.Status">
+                            {{newU.Status|userStatus}}
+                        </td>
+                        <td>
+                            <ul class="list-inline">
+                                <li ng-show="!newUserform.$invalid">
+                                    <a ng-click="addUser()"><i class="fa fa-floppy-o fa-fw"></i>保存</a>
+                                </li>
+                                <li>
+                                    <a ng-click="cancelAdd()"><i class="fa  fa-times fa-fw"></i>取消</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+    </div>
+    <div class="pre_set_part bg-white nav_tabs_detail" ng-class="panel_index == 2 ?'show':'hidden'">
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3 class="modal-title">{{role.RoleName}}功能管理</h3>
+            </div>
+
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li ng-repeat="item in features" class="list-group-item">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="item.selected">
+                                {{item.Description}}
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+            </div>
+        </script>
+        <div>  
+            <header class="header">
+                <a class="btn  btn-success" href="#" ng-click="addRole()">
+                    <i class="fa fa-user-plus fa-1x"></i>添加角色
+                </a>
+            </header>
+            <div>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>角色</th>
+                            <th>功能</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="role in roles">
+                            <td>
+                                <span ng-show="!role.edit">{{role.RoleName}}</span>
+                                <input type="text" ng-model="role.nameD" ng-show="role.edit" />
+                            </td>
+                            <td>
+                                <label class="label label-info" style="display:inline-block;margin:0 3px;" ng-repeat="item in role.Features">{{item.Description}}</label>
+                                <span class="label label-warning" ng-show="!role.Features || role.Features.length === 0" ng-click="open(role)">没有绑定功能。</span>
+                            </td>
+                            <td>
+                                <span ng-show="!role.edit">{{role.RoleDescription}}</span>
+                                <input type="text" ng-model="role.descD" ng-show="role.edit" />
+                                
+                            </td>
+                            <td>
+                                <a style="cursor: pointer;" class="fa fa-x fa-pencil-square-o " ng-class="{'showspan':!role.edit,'hidden':role.edit}" ng-click="startEdit(role)">修改</a>
+                                <a style="cursor: pointer;" class="fa fa-x fa-gear" ng-class="{'showspan':!role.edit,'hidden':role.edit}" ng-click="open(role)">功能选择</a>
+                                <a style="cursor: pointer;" class="fa fa-x fa-trash-o " ng-class="{'showspan':!role.edit,'hidden':role.edit}" ng-click="deleteitem(role)">删除</a>
+                                <a style="cursor: pointer;" class="fa fa-x fa-floppy-o " ng-click="updateitem(role)" ng-class="{'showspan':role.edit,'hidden':!role.edit}">保存</a>
+                                <a style="cursor: pointer;" ng-click="cancelRoleEdit(role,$index)" ng-class="{'showspan':role.edit,'hidden':!role.edit}"><i class="fa  fa-times fa-fw"></i>取消</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="pre_set_part bg-white nav_tabs_detail" ng-class="panel_index == 3 ?'show':'hidden'">
+        <div style="padding:10px;">
+            <div class="form-group form-part">
+                <label for="input-id-1" class="control-label">默认水费</label>
+                <div class="form-part-input">
+                    <input id="input-id-1" type="text" ng-model="details[0].Price" class="form-control ng-pristine ng-valid ng-touched">
+                </div>
+            </div>
+            <div class="form-group form-part">
+                <label for="input-id-2" class="control-label">默认电费</label>
+                <div class="form-part-input">
+                    <input id="input-id-2" type="text" ng-model="details[1].Price" class="form-control ng-pristine ng-valid ng-touched">
+                </div>
+            </div>
+            <div class="form-group form-part">
+                <label for="input-id-3" class="control-label">默认气费</label>
+                <div class="form-part-input">
+                    <input id="input-id-3" type="text" ng-model="details[2].Price" class="form-control ng-pristine ng-valid ng-touched">
+                </div>
+            </div>
+            <div class="form-group form-part" style="margin-top:20px;">
+                <button type="button" class="mb-sm btn btn-primary" ng-click="saveDetail()">保存设置</button>
+            </div>
+        </div>
+    </div>
+</div>
