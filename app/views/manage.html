@@ -1,7 +1,7 @@
 <div class="manage-view" ng-controller="ManageCtrl">
-    
+
     <header class="header">
-        <a class="btn  btn-success" data-toggle="modal" data-target="#roleAdd">
+        <a class="btn  btn-success">
             <i class="fa fa-user-plus fa-1x"></i>添加帐户
         </a>
     </header>
@@ -61,7 +61,80 @@
         </table>
     </div>
 
-    <div class="info-card fadeIn animated" id="roleAdd" info-card>
+    <div class="modal fade" id="accountAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+            ...
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="accountAdd" class="info-card fadeIn animated">
+        <div class="info-card-wrapper">   
+            <div class="panel-header">
+                <h1>新增账户</h1>
+                <a class="info-card-close"><i class="ALiconfont icon-close"></i></a>
+            </div>
+            <div class="panel-body">
+                <table class="table-form table-bordered bg-white">
+                    <tbody>
+                        <tr>
+                            <td class="require">学校名称</td><td><input type="text" ng-model=""/></td>
+                        </tr>
+                        <tr>
+                            <td class="require">用户名</td><td><input type="text" ng-model="" /></td>
+                        </tr>
+                        <tr>
+                            <td class="require">密码</td><td><input type="text" ng-model="" /></td>
+                        </tr>
+                        <tr>
+                            <td class="require">电费单价</td><td><input type="text" ng-model="" /></td>
+                        </tr>
+                        <tr>
+                            <td class="require">水费单价</td><td><input type="text" ng-model="" /></td>
+                        </tr>
+                        <tr>
+                            <td class="require">气费单价</td><td><input type="text" ng-model="" /></td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="require">付费模式</td>
+                            <td>
+                                <div class="radio c-radio d-radio form-part">
+                                    <label>
+                                        <input type="radio" ng-value="true" ng-model="fuf.Status">
+                                        <span class="fa fa-circle"></span>前付费</label>
+                                    <label>
+                                        <input type="radio" ng-value="false" ng-model="fuf.Status">
+                                        <span class="fa fa-circle"></span>后付费</label>
+                                </div>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="td-btn-box">
+                                <a ng-show="media.status" ng-click="addSave()" class="btn btn-success">提交</a>
+                                <a ng-hide="media.status" ng-click="editSave()" class="btn btn-info">保存</a>
+                                <a ng-hide="media.status" ng-click="delete()" class="btn btn-danger">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="info-card fadeIn animated" id="roleAdd" info-card>
         <div class="info-card-wrapper">
             <div class="info-card-dialog">
                 <div class="info-card-content">
@@ -117,7 +190,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
  
 </div>

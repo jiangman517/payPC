@@ -8191,6 +8191,7 @@ fieldset[disabled] .flatdoc-wrapper .button:hover {
     margin-left: 10px;
 }
 
-
 .manage-view { padding:15px; background:#fff; border: 1px solid #ddd; }
 .manage-view .header{ margin-bottom:15px; }
+
+.info-card{background-color: #000;}

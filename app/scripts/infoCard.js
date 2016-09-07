@@ -1,4 +1,4 @@
-angular.module('payApp')
+angular.module('payPcApp')
 .directive('infoCard', function() {
     return {
         restrict: 'A',
